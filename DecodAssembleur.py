@@ -126,7 +126,7 @@ def ComputeLine(line : str, num : int) -> str :
 # ============================================= #
 
 # Récupération programme assembleur :
-progFile = open("./AssembleurProgramme.txt", "r")
+progFile = open("./AssembleurProgramme.obj", "r")
 str_prog = progFile.read()
 progFile.close()
 
@@ -139,14 +139,14 @@ Labels = GetLabels(prog_lines)
 ## Binaire :
 bin = ComputeLines(prog_lines, True)
 # Enregistrement
-fileBin = open("./ResultBin.txt", "w")
+fileBin = open("./Results.bin", "w")
 fileBin.write(bin)
 fileBin.close()
 
 ## Hexa :
 hex = Tools.BinProgToHexProg(bin)
 # Enregistrement
-fileHex = open("./ResultHex.txt", "w")
+fileHex = open("./Results.hex", "w")
 fileHex.write(hex)
 fileHex.close()
 #exit()
