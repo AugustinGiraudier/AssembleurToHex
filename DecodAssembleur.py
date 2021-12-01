@@ -111,7 +111,7 @@ def ComputeLine(line : str, num : int) -> str :
     lineBinProg += Tools.RegisterToBinary(elems[2])
 
     # Cas d'une constante :
-    if elems[0][-1] == 'I':
+    if elems[0][-1] == 'i':
         lineBinProg = Tools.FillStr(lineBinProg, 16, True)
         lineBinProg += Tools.ConstantToBin(elems[3])
     # Sinon registre :

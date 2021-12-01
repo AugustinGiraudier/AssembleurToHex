@@ -11,7 +11,7 @@ COMMANDS = {
         "categorie" : "UAL",
         "code" : "0110"
     },
-    "ADDI" : {
+    "ADDi" : {
         "categorie" : "UAL",
         "code" : "0111"
     },
@@ -19,7 +19,7 @@ COMMANDS = {
         "categorie" : "UAL",
         "code" : "1000"
     },
-    "SUBI" : {
+    "SUBi" : {
         "categorie" : "UAL",
         "code" : "1001"
     },
@@ -27,7 +27,7 @@ COMMANDS = {
         "categorie" : "UAL",
         "code" : "0010"
     },
-    "ORI" : {
+    "ORi" : {
         "categorie" : "UAL",
         "code" : "0011"
     },
@@ -35,7 +35,7 @@ COMMANDS = {
         "categorie" : "UAL",
         "code" : "0100"
     },
-    "XORI" : {
+    "XORi" : {
         "categorie" : "UAL",
         "code" : "0101"
     },
@@ -43,7 +43,7 @@ COMMANDS = {
         "categorie" : "UAL",
         "code" : "0000"
     },
-    "ANDI" : {
+    "ANDi" : {
         "categorie" : "UAL",
         "code" : "0001"
     },
