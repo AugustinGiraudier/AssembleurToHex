@@ -7,7 +7,7 @@ def BinProgToHexProg(BinProg : str) -> str :
     for line in lines:
         if line == "":
             continue
-        HexProg += hex(int(line, 2))
+        HexProg += FillStr(hex(int(line, 2))[2:], 8, False)
         HexProg += "\n"
     return HexProg[:-1]
 

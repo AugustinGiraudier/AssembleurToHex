@@ -65,59 +65,62 @@ def ComputeLine(line : str, num : int) -> str :
         if len(elems) == 0:
             return ""
 
-    # Categorie (MEM/CTRL/UAL)
+
     categorie = COMMANDS[elems[0]]["categorie"]
-    lineBinProg += CATEGORIES[categorie]
-    # Opération (XOR/ADD...) + immédiat
-    lineBinProg += COMMANDS[elems[0]]["code"]
 
     # Cas des JMP/CALL/RET/LD/STR...
     if categorie == "CTRL" or categorie == "MEM":
         nbParam = COMMANDS[elems[0]]["nbParam"]
         if nbParam == 0:
-            lineBinProg = Tools.FillStr(lineBinProg, 32, True)
+            lineBinProg = Tools.FillStr(lineBinProg, 26, True)
         elif nbParam == 1:
-            lineBinProg = Tools.FillStr(lineBinProg, 16, True)
-            lineBinProg += Tools.ConstantToBin(str(Labels[elems[1]]))
+            lineBinProg += Tools.ConstantToBin(str(Labels[elems[1]])) + '0'
+            lineBinProg = Tools.FillStr(lineBinProg, 26, True)
         elif nbParam == 2:
             if elems[0] == "LD":
+                lineBinProg = Tools.FillStr(lineBinProg, 20, True)
+                lineBinProg += Tools.RegisterToBinary(elems[2])
                 lineBinProg += Tools.RegisterToBinary(elems[1])
-                lineBinProg = Tools.FillStr(lineBinProg, 16, True)
-                lineBinProg += Tools.FillStr(Tools.RegisterToBinary(elems[2]), 16, False)
             elif elems[0] == "STR":
-                lineBinProg = Tools.FillStr(lineBinProg, 6, True)
+                lineBinProg = Tools.FillStr(lineBinProg, 17, True)
+                lineBinProg += Tools.RegisterToBinary(elems[2])
                 lineBinProg += Tools.RegisterToBinary(elems[1])
-                lineBinProg = Tools.FillStr(lineBinProg, 16, True)
-                lineBinProg += Tools.FillStr(Tools.RegisterToBinary(elems[2]), 16, False) 
+                lineBinProg = Tools.FillStr(lineBinProg, 26, True)
             else:
                 print("Error : unknown operation -->" + line + "<--")
                 exit()
         elif nbParam == 3:
-            lineBinProg = Tools.FillStr(lineBinProg, 9, True)
-            lineBinProg += Tools.RegisterToBinary(elems[1])
+            lineBinProg += Tools.ConstantToBin(str(Labels[elems[3]])) + '0'
             lineBinProg += Tools.RegisterToBinary(elems[2])
-            lineBinProg = Tools.FillStr(lineBinProg, 16, True)
-            lineBinProg += Tools.ConstantToBin(str(Labels[elems[3]]))
+            lineBinProg += Tools.RegisterToBinary(elems[1])
+            lineBinProg = Tools.FillStr(lineBinProg, 26, True)
         else:
             print("Error : Unreadable number of params -->" + nbParam + "<--")
             exit()
-        return lineBinProg
-
-    # Sinon, autres cas :
-
-    # Destination
-    lineBinProg += Tools.RegisterToBinary(elems[1])
-    # Source
-    lineBinProg += Tools.RegisterToBinary(elems[2])
-
-    # Cas d'une constante :
-    if elems[0][-1] == 'i':
-        lineBinProg = Tools.FillStr(lineBinProg, 16, True)
-        lineBinProg += Tools.ConstantToBin(elems[3])
-    # Sinon registre :
+    
     else:
-        lineBinProg += Tools.RegisterToBinary(elems[3])
-        lineBinProg = Tools.FillStr(lineBinProg, 32, True)
+        # Sinon, autres cas :
+
+        # Cas d'une constante :
+        if elems[0][-1] == 'i':
+            lineBinProg += Tools.ConstantToBin(elems[3])
+            lineBinProg = Tools.FillStr(lineBinProg, 20, True)
+
+        # Sinon 2eme registre source :
+        else:
+            lineBinProg = Tools.FillStr(lineBinProg, 17, True)
+            lineBinProg += Tools.RegisterToBinary(elems[3])
+
+        # Source
+        lineBinProg += Tools.RegisterToBinary(elems[2])
+        # Destination
+        lineBinProg += Tools.RegisterToBinary(elems[1])
+
+    # Opération (XOR/ADD...) + immédiat
+    lineBinProg += COMMANDS[elems[0]]["code"]
+
+    # Categorie (MEM/CTRL/UAL)
+    lineBinProg += CATEGORIES[categorie]
 
     return lineBinProg
 
@@ -137,7 +140,7 @@ prog_lines = str_prog.split("\n")
 Labels = GetLabels(prog_lines)
 
 ## Binaire :
-bin = ComputeLines(prog_lines, True)
+bin = ComputeLines(prog_lines, False)
 # Enregistrement
 fileBin = open("./Results.bin", "w")
 fileBin.write(bin)
